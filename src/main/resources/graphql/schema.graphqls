@@ -1,0 +1,16 @@
+type Query {
+    parents(name: String): [ParentEntity]
+}
+
+type ParentEntity {
+    id: ID
+    name: String
+    childEntities: [ChildEntity!]!
+}
+
+
+type ChildEntity {
+    id: ID
+    parentID: ID
+    name: String!
+}
