@@ -1,5 +1,21 @@
+input Filters {
+    entity: String,
+    criteria: [FilterCriteria]
+}
+
+input FilterCriteria {
+    key: String,
+    value: String
+}
+
+input Pagging {
+    startIndex: Int,
+    pageSize: Int
+}
+
 type Query {
     parents(name: String): [ParentEntity]
+    getData(criteria: [FilterCriteria]): [ParentEntity]
 }
 
 type ParentEntity {
@@ -14,3 +30,4 @@ type ChildEntity {
     parentID: ID
     name: String!
 }
+

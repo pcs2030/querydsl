@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class ParentGraphQLController {
 //    }
 
 
-        @QueryMapping
+    @QueryMapping
     public List<ParentEntity> parents(DataFetchingEnvironment dataFetchingEnvironment) {
 
             Map<String, Object> arguments = dataFetchingEnvironment.getArguments();
@@ -71,6 +72,28 @@ public class ParentGraphQLController {
             if(dataFetchingEnvironment.getArgument("childEntityName") != null) {
                 multval.add("childEntities.name",dataFetchingEnvironment.getArgument("childEntityName"));
             }
+
+        Predicate predicate = predicateBuilder.getPredicate(TypeInformation.of(ParentEntity.class),multval,bindingsFactory.createBindingsFor(TypeInformation.of(ParentEntity.class)));
+        return (List<ParentEntity>) parentRepository.findAll(predicate);
+    }
+
+
+    @QueryMapping
+    public List<ParentEntity> getData(DataFetchingEnvironment dataFetchingEnvironment) {
+
+        Map<String, Object> arguments = dataFetchingEnvironment.getArguments();
+        MultiValueMap<String, String> multval = new LinkedMultiValueMap<>();
+        arguments.forEach((key,value)->{
+
+            if(value instanceof Iterable<?> iterable && key.equals("criteria")) {
+                for(Object item : iterable) {
+                    LinkedHashMap linkedHashMap = (LinkedHashMap) item;
+                    multval.add((String) linkedHashMap.get("key"),(String)linkedHashMap.get("value"));
+                }
+            }
+        });
+
+
 
         Predicate predicate = predicateBuilder.getPredicate(TypeInformation.of(ParentEntity.class),multval,bindingsFactory.createBindingsFor(TypeInformation.of(ParentEntity.class)));
         return (List<ParentEntity>) parentRepository.findAll(predicate);
