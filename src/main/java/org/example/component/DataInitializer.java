@@ -40,12 +40,14 @@ public class DataInitializer implements InitializingBean {
 
     ChildEntity parentEntity2 = new ChildEntity();
     parentEntity2.setName("child");
+    parentEntity2.setSur("sur");
     parentEntity2.setParentEntity(parentEntity);
     childRepository.save(parentEntity2);
 
 
     ChildEntity parentEntity3 = new ChildEntity();
     parentEntity3.setName("child1");
+    parentEntity3.setSur("sur1");
     parentEntity3.setParentEntity(parentEntity);
     childRepository.save(parentEntity3);
 

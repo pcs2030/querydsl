@@ -6,6 +6,8 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathType;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.DslExpression;
+import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.ListPath;
 import org.example.common.code.FilterCriteria;
 import org.example.common.code.FilterGroup;
@@ -87,7 +89,11 @@ public class QuerydslPredicateBuilderCustom {
                     if (propertyPath != null) {
                         Path<?> path2 = this.getPath(propertyPath, bindings);
                         if(selectColumns.contains(path)){
-                            predicateJoinsAndSelect.expressions.add((Expression) path2);
+                            if(path2 instanceof DslExpression<?>) {
+                                ;
+                                predicateJoinsAndSelect.expressions.add(((DslExpression)path2).as(path));
+                            }
+
                             predicateJoinsAndSelect.expressionsMap.put(path,(Expression<?>) path2);
                         }
 

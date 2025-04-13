@@ -18,6 +18,10 @@ public class ChildEntity {
     @Column
     private String name;
 
+    @Column
+    private String sur;
+
+
     public Long getId() {
         return id;
     }
@@ -32,6 +36,14 @@ public class ChildEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSur() {
+        return sur;
+    }
+
+    public void setSur(String sur) {
+        this.sur = sur;
     }
 
     @ManyToOne

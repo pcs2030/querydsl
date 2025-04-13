@@ -117,6 +117,7 @@ public class ParentGraphQLController {
         List s=new ArrayList<>();
         s.add("name");
         s.add("childEntities.name");
+        s.add("childEntities.sur");
         predicateBuilderCustom.prepareAll(TypeInformation.of(ParentEntity.class),filterGroup,new QuerydslBindingsCustom(),Collections.unmodifiableList(s));
 
         Predicate predicate1 = predicateBuilder.getPredicate(TypeInformation.of(ParentEntity.class),multval,bindingsFactory.createBindingsFor(TypeInformation.of(ParentEntity.class)));
@@ -127,13 +128,21 @@ public class ParentGraphQLController {
 
         JPAQuery JQ =jpaQueryFactory.from(getEntityPath(ParentEntity.class));
         JQ.where( predicateJoinsAndSelect.predicates.toArray(Predicate[]::new));
-        JQ.select(Projections.fields(ParentEntity.class,(Map<String, ? extends Expression<?>>) predicateJoinsAndSelect.expressionsMap));
+
+        for (QuerydslPredicateBuilderCustom.JoinPath joins : predicateJoinsAndSelect.joins) {
+            JQ.leftJoin((CollectionExpression) joins.child());
+        }
+        JQ.fetchJoin();
+
+        //Working N+1 not there
+       // JQ.select(QParentEntity.parentEntity);
+
+        //Not Working,adding duplicate joins
+       // JQ.select(Projections.fields(ParentEntity.class,predicateJoinsAndSelect.expressions.toArray(new Expression[0])));
+
+       JQ.select(predicateJoinsAndSelect.expressions.toArray(new Expression[0]));
 
 
-
-            for (QuerydslPredicateBuilderCustom.JoinPath joins : predicateJoinsAndSelect.joins) {
-//                JQ.leftJoin((CollectionExpression) joins.child());
-            }
 
 
               //return   JQ.fetch();
