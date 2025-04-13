@@ -21,7 +21,7 @@ type Query {
 type ParentEntity {
     id: ID
     name: String
-    childEntities: [ChildEntity!]!
+    childEntities: [ChildEntity]
 }
 
 

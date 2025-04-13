@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class ParentEntity {
         this.name = name;
     }
 
+    @Nullable
     @OneToMany(mappedBy = "parentEntity")
     private List<ChildEntity> childEntities;
 

@@ -14,6 +14,7 @@ public class SpringBootGraphqlQuerydslDemoApplication
 {
   public static void main(String[] args) {
     // start the application
+    System.setProperty("spring.devtools.livereload.enabled", "false");
     SpringApplication.run(SpringBootGraphqlQuerydslDemoApplication.class, args);
   }
 }
